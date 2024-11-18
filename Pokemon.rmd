@@ -1,0 +1,4 @@
+# Simpson's Index: N is the total community; ni is the # individuals in a grouping ("species"), and S is species richness
+simpson <- function(N, ni, S) {
+  
+}
