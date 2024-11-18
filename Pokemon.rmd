@@ -1,4 +1,36 @@
+---
+title: "Pokemon Ecology"
+author: "Skye Smith, Kit Eller"
+date: "`r Sys.Date()`"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      fig.align = "center",
+                      warning = F,
+                      mesage = F)
+
+# Load the needed packages for MLR: tidyverse, regclass, broom, GGally
+
+library(tidyverse)
+library(regclass)
+library(broom)
+library(GGally)
+library(dplyr)
+
+# Changes the default theme to theme_bw()
+
+theme_set(theme_bw())
+
+pokemon <- read.csv("pokedex.csv")
+
+```
+# Pokemon Ecology
+
+Our data comes from the pokemon videogames, which have been released regularly since 1996. The data itself is a collection of the statistics found within the pokedex contained in each game. Our data is not a sample, it is a complete collection of all pokedex entries. Since our data represents the entire population we are concerned with, there is no sampling bias. Our questions are for an observational study, as we are working from pre-collected data. The measurements were taken from the pokedex, which records information about the various pokemon that can be caught in the games. We do not suspect any bias in the data collected, as it is made up of all the stats for every pokemon game created since the first was made in 1996. This data is of interest to us because we want to explore the hypothetical ecology of the pokemon world.
+
 # Simpson's Index: N is the total community; ni is the # individuals in a grouping ("species"), and S is species richness
-simpson <- function(N, ni, S) {
+
+simpson <- function(N, n) {
   
 }
