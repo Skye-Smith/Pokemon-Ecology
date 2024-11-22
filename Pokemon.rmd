@@ -67,27 +67,34 @@ pokemon |>
 	ggplot(
 		mapping = aes(x = num_types)
 	) + 
-	geom_bar()
+	geom_bar() +
+	scale_y_continuous(
+		expand = c(0,0),
+		limits = c(0, 600)
+	)
+
+```
+``` {r power-by-type}
 
 pokemon |>
 	summarize(
 		.by = type_1,
-		combined_type = type_1,
 		avg_power = mean(total_points)
 	) |>
 	ggplot(
-		mapping = aes(x = combined_type, y = avg_power)
+		mapping = aes(x = reorder(type_1, avg_power, decreasing = TRUE), y = avg_power)
 	) +
-	geom_bar(
-		stat = "identity"
+	geom_col(
+	) +
+	scale_y_continuous(
+		expand = c(0,0),
+		limits = c(0, 550)
 	) +
 	theme(
-		axis.text.x = element_text(angle = 90)
+		axis.text.x = element_text(angle = 59, vjust = 0.5)
 	)
-	
 
 ```
-
 
 
 
