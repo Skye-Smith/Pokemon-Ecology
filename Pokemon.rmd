@@ -24,6 +24,21 @@ theme_set(theme_bw())
 
 pokemon <- read.csv("pokedex.csv")
 pokemon[pokemon == ''] <- NA
+
+```
+# Pokemon Ecology
+
+## Introduction
+
+Our data comes from the pokemon videogames, which have been released regularly since 1996. The data itself is a collection of the statistics found within the pokedex contained in each game. Our data is not a sample, it is a complete collection of all pokedex entries. Since our data represents the entire population we are concerned with, there is no sampling bias. Our questions are for an observational study, as we are working from pre-collected data. The measurements were taken from the pokedex, which records information about the various pokemon that can be caught in the games. We do not suspect any bias in the data collected, as it is made up of all the stats for every pokemon game created since the first was made in 1996. This data is of interest to us because we want to explore the hypothetical ecology of the pokemon world.
+
+## Data Visualization
+
+### Pokemon Type Colors
+
+``` {r color_pick}
+
+# Construct dataframe containing all colors
 colors <- data.frame(
 	id = c(1:18),
 	color_name = factor(c("Bug", "Dark", "Dragon", "Electric", "Fairy",
@@ -36,12 +51,24 @@ colors <- data.frame(
 						"#9d873c", "#b6b3c2", "#3395f5")
 )
 
+# Function to select color of given type
+color_pick <- function(type) {
+	color <-	
+		colors |>
+		filter(
+			color_name == type
+		) |>
+		summarize(
+			color = first(color)
+		)
+	
+	return(color[1, 1])
+}
+
 ```
-# Pokemon Ecology
 
-Our data comes from the pokemon videogames, which have been released regularly since 1996. The data itself is a collection of the statistics found within the pokedex contained in each game. Our data is not a sample, it is a complete collection of all pokedex entries. Since our data represents the entire population we are concerned with, there is no sampling bias. Our questions are for an observational study, as we are working from pre-collected data. The measurements were taken from the pokedex, which records information about the various pokemon that can be caught in the games. We do not suspect any bias in the data collected, as it is made up of all the stats for every pokemon game created since the first was made in 1996. This data is of interest to us because we want to explore the hypothetical ecology of the pokemon world.
+### Simpson's Diversity Index
 
-# Simpson's Diversity Index
 ```{r SimpsonIndex}
 # Accepts a vector n. n is made up of the number of individuals in each grouping (species) of the population
 simpson <- function(n) {
@@ -57,7 +84,8 @@ simpson <- function(n) {
 
 ```
 
-# Shannon's Diversity Index
+### Shannon's Diversity Index
+
 ```{r ShannonsIndex}
 # Accepts a vector n. n is made up of the number of individuals in each grouping (species) of the population
 shannon <- function(n) {
@@ -75,7 +103,8 @@ shannon <- function(n) {
 
 ```
 
-# Pielou's Eveness Index
+### Pielou's Eveness Index
+
 ```{r PielousEveness}
 # Accepts a vector n. n is made up of the number of individuals in each grouping (species) of the population
 pielou <- function(n) {
@@ -94,8 +123,9 @@ pielou <- function(n) {
 ```
 
 
-# Diversity and Eveness Graphs by Species
-```{r diversitygraphs}
+### Diversity and Eveness Graphs by Species
+
+```{r species_diversity_graph}
 #Looking at all species regardless of generation
 pokemon_all_species <- 
   pokemon |> 
@@ -115,6 +145,7 @@ pokemon_allgen_species <-
     .by=generation
   )
 
+# Intend to refactor and optimize for final report
 gen1_species <- 
   pokemon_allgen_species |> 
   filter(generation==1)
@@ -141,19 +172,45 @@ gen8_species <-
   filter(generation==8)
 
 pokemon_diversity_species_comparison <- 
-data.frame(
-  "Population"=c("All Species","Gen1","Gen2","Gen3","Gen4","Gen5","Gen6","Gen7","Gen8"),
-  "SimpsonsDiversity"=c(simpson(pokemon_all_species$all_species_n), simpson(gen1_species$gen_species_n), simpson(gen2_species$gen_species_n), simpson(gen3_species$gen_species_n), simpson(gen4_species$gen_species_n), simpson(gen5_species$gen_species_n), simpson(gen6_species$gen_species_n), simpson(gen7_species$gen_species_n), simpson(gen8_species$gen_species_n)),
-  "ShannonsDiversity"=c(shannon(pokemon_all_species$all_species_n), shannon(gen1_species$gen_species_n), shannon(gen2_species$gen_species_n), shannon(gen3_species$gen_species_n), shannon(gen4_species$gen_species_n), shannon(gen5_species$gen_species_n), shannon(gen6_species$gen_species_n), shannon(gen7_species$gen_species_n), shannon(gen8_species$gen_species_n)),
-  "PielousEveness"=c(pielou(pokemon_all_species$all_species_n), pielou(gen1_species$gen_species_n), pielou(gen2_species$gen_species_n), pielou(gen3_species$gen_species_n), pielou(gen4_species$gen_species_n), pielou(gen5_species$gen_species_n), pielou(gen6_species$gen_species_n), pielou(gen7_species$gen_species_n), pielou(gen8_species$gen_species_n))
+	data.frame(
+	  "Population"=c("All Species","Gen1","Gen2","Gen3","Gen4","Gen5","Gen6","Gen7","Gen8"),
+	  "SimpsonsDiversity"=c(simpson(pokemon_all_species$all_species_n),
+	  											simpson(gen1_species$gen_species_n), simpson(gen2_species$gen_species_n),
+	  											simpson(gen3_species$gen_species_n), simpson(gen4_species$gen_species_n),
+	  											simpson(gen5_species$gen_species_n), simpson(gen6_species$gen_species_n),
+	  											simpson(gen7_species$gen_species_n), simpson(gen8_species$gen_species_n)),
+	  "ShannonsDiversity"=c(shannon(pokemon_all_species$all_species_n),
+	  											shannon(gen1_species$gen_species_n), shannon(gen2_species$gen_species_n),
+	  											shannon(gen3_species$gen_species_n), shannon(gen4_species$gen_species_n),
+	  											shannon(gen5_species$gen_species_n), shannon(gen6_species$gen_species_n),
+	  											shannon(gen7_species$gen_species_n), shannon(gen8_species$gen_species_n)),
+	  "PielousEveness"=c(pielou(pokemon_all_species$all_species_n), 
+	  									 pielou(gen1_species$gen_species_n), pielou(gen2_species$gen_species_n),
+	  									 pielou(gen3_species$gen_species_n), pielou(gen4_species$gen_species_n),
+	  									 pielou(gen5_species$gen_species_n), pielou(gen6_species$gen_species_n),
+	  									 pielou(gen7_species$gen_species_n), pielou(gen8_species$gen_species_n))
   )
 
-pokemon_diversity_comparison
+# Graph resulting data
+pokemon_diversity_species_comparison |>
+	pivot_longer(
+		-Population
+	) |>
+	ggplot(
+		mapping = aes(x = Population, y = value, fill = name)
+	) +
+	geom_col(
+		position = "dodge"
+	) + 
+	scale_y_continuous(
+		breaks=seq(1,7,1)
+	)
 
 ```
 
-# Diversity and Eveness Graphs by Species
-```{r diversitygraphs}
+### Diversity and Eveness Graphs by Species
+
+```{r type_diversity_graph}
 #Looking at all species regardless of generation
 pokemon_all_type <- 
   pokemon |> 
@@ -173,6 +230,7 @@ pokemon_allgen_type <-
     .by=generation
   )
 
+# Intend to refactor and optimize for final report
 gen1_types <- 
   pokemon_allgen_type |> 
   filter(generation==1)
@@ -199,21 +257,43 @@ gen8_types <-
   filter(generation==8)
 
 pokemon_diversity_types_comparison <- 
-data.frame(
-  "Population"=c("All Species","Gen1","Gen2","Gen3","Gen4","Gen5","Gen6","Gen7","Gen8"),
-  "SimpsonsDiversity"=c(simpson(pokemon_all_type$all_type_n), simpson(gen1_types$gen_type_n), simpson(gen2_types$gen_type_n), simpson(gen3_types$gen_type_n), simpson(gen4_types$gen_type_n), simpson(gen5_types$gen_type_n), simpson(gen6_types$gen_type_n), simpson(gen7_types$gen_type_n), simpson(gen8_types$gen_type_n)),
-  "ShannonsDiversity"=c(shannon(pokemon_all_type$all_type_n), shannon(gen1_types$gen_type_n), shannon(gen2_types$gen_type_n), shannon(gen3_types$gen_type_n), shannon(gen4_types$gen_type_n), shannon(gen5_types$gen_type_n), shannon(gen6_types$gen_type_n), shannon(gen7_types$gen_type_n), shannon(gen8_types$gen_type_n)),
-  "PielousEveness"=c(pielou(pokemon_all_type$all_type_n), pielou(gen1_types$gen_type_n), pielou(gen2_types$gen_type_n), pielou(gen3_types$gen_type_n), pielou(gen4_types$gen_type_n), pielou(gen5_types$gen_type_n), pielou(gen6_types$gen_type_n), pielou(gen7_types$gen_type_n), pielou(gen8_types$gen_type_n))
+	data.frame(
+	  "Population"=c("All Types","Gen1","Gen2","Gen3","Gen4","Gen5","Gen6","Gen7","Gen8"),
+	  "SimpsonsDiversity"=c(simpson(pokemon_all_type$all_type_n), 
+	  											simpson(gen1_types$gen_type_n), simpson(gen2_types$gen_type_n),
+	  											simpson(gen3_types$gen_type_n), simpson(gen4_types$gen_type_n),
+	  											simpson(gen5_types$gen_type_n), simpson(gen6_types$gen_type_n),
+	  											simpson(gen7_types$gen_type_n), simpson(gen8_types$gen_type_n)),
+	  "ShannonsDiversity"=c(shannon(pokemon_all_type$all_type_n), 
+	  											shannon(gen1_types$gen_type_n), shannon(gen2_types$gen_type_n),
+	  											shannon(gen3_types$gen_type_n), shannon(gen4_types$gen_type_n),
+	  											shannon(gen5_types$gen_type_n), shannon(gen6_types$gen_type_n),
+	  											shannon(gen7_types$gen_type_n), shannon(gen8_types$gen_type_n)),
+	  "PielousEveness"=c(pielou(pokemon_all_type$all_type_n), 
+	  									 pielou(gen1_types$gen_type_n), pielou(gen2_types$gen_type_n),
+	  									 pielou(gen3_types$gen_type_n), pielou(gen4_types$gen_type_n),
+	  									 pielou(gen5_types$gen_type_n), pielou(gen6_types$gen_type_n),
+	  									 pielou(gen7_types$gen_type_n), pielou(gen8_types$gen_type_n))
   )
 
-pokemon_diversity_types_comparison
+# Graph resulting data
+pokemon_diversity_types_comparison |>
+	pivot_longer(
+		-Population
+	) |>
+	ggplot(
+		mapping = aes(x = Population, y = value, fill = name)
+	) +
+	geom_col(
+		position = "dodge"
+	)
 
 ```
 
 
+## Proportion of Multi-type Pokemon
 
-
-```{r code2}
+```{r multitype-proportion}
 
 pokemon |>
 	summarize(
@@ -222,30 +302,29 @@ pokemon |>
 	ggplot(
 		mapping = aes(x = num_types)
 	) + 
-	geom_bar() +
+	geom_bar(
+		fill = c("skyblue", "#777777")
+	) +
 	scale_y_continuous(
 		expand = c(0,0),
 		limits = c(0, 600)
+	) +
+	labs(
+		title = "Count of Single v.s. Multi-type Pokemon",
+		y = "Number of Pokemon"
+	) +
+	theme(
+		plot.title = element_text(size = 16, hjust = 0.5),
+		axis.title.x = element_blank()
 	)
 
 ```
+From the bar graph above, we are able to see that the while there are less multitype pokemon the difference is not dramatic. From a numerical analysis, we can determine that there are about 12% less multitype pokemon than single type pokemon. We were expecting a more significant difference (around 30% or more). While our data does not account for the frequency at which the various species can be observed in the wild, the existance of so many different multi-type species may indicate that there is not a significant difference between the populations of single and multi-type pokemon.
 
 
+## Average Power by Type
 
 ``` {r power-by-type}
-
-color_pick <- function(type) {
-	color <-	
-		colors |>
-		filter(
-			color_name == type
-		) |>
-		summarize(
-			color = first(color)
-		)
-	
-	return(color[1, 1])
-}
 
 pokemon |>
 	summarize(
@@ -259,11 +338,12 @@ pokemon |>
 		mapping = aes(x = reorder(type_1, avg_power, decreasing = TRUE), y = avg_power)
 	) +
 	geom_col(
-		fill = c(color_pick("Dragon"), color_pick("Psychic"), color_pick("Steel"), color_pick("Fire"), 
-						 color_pick("Electric"), color_pick("Rock"), color_pick("Fighting"), color_pick("Ghost"), 
-						 color_pick("Flying"), color_pick("Fairy"), color_pick("Poison"), color_pick("Dark"), 
-						 color_pick("Water"), color_pick("Ground"), color_pick("Ice"), color_pick("Grass"), 
-						 color_pick("Normal"), color_pick("Bug"))
+		fill = c(color_pick("Dragon"), color_pick("Psychic"), color_pick("Steel"), 
+						 color_pick("Fire"), color_pick("Electric"), color_pick("Rock"), 
+						 color_pick("Fighting"), color_pick("Ghost"), color_pick("Flying"), 
+						 color_pick("Fairy"), color_pick("Poison"), color_pick("Dark"), 
+						 color_pick("Water"), color_pick("Ground"), color_pick("Ice"), 
+						 color_pick("Grass"), color_pick("Normal"), color_pick("Bug"))
 	) +
 	scale_y_continuous(
 		expand = c(0,0),
@@ -271,7 +351,7 @@ pokemon |>
 	) +
 	labs(
 		title = "Average Power by Type",
-		x = "Pokemon Types",
+		x = "Pokemon Type",
 		y = "Average Base Power"
 	) +
 	theme(
@@ -280,6 +360,10 @@ pokemon |>
 	)
 
 ```
+The graph above displays the average base power of pokemon with respect to their primary type. From this graph we can determine a few interesting relationships between type and strength. For instance, there appears to be a large number of types which, on average, exhibit similar strength (on the graph, roughly fire through Ice). However, there are three types on the high and low end which exhibit a larger difference in strength from their peers. On the high end, Dragon, Psychic and Steel are all notably stronger, and on the low end, Grass, Normal and Bug type pokemon are weaker on average. We believe that this data implies a dramatic difference between the average conditions which the pokemon of various types are subject to in their natural habitats. For instance, Draconic pokemon may tend to live in much more hostile environs than the average normal type pokemon, and thus, Dragon types have developed greater resilience.
 
+## Conclusions
 
+## Limitations / Reccomendations
 
+We believe that the breadth of our conclusions was limited by the nature of our available data. While we were able to make conclusions relevant to the ecological diversity indices we employed, the implications of our other efforts would best serve as hypotheses to be tested with further study. For instance, the trends in average power we derived are interesting, but could be very different if we had access to information about the population size of each Pokemon species. Without this information, we can give little confidence that the trends observed are representative of the actual populations of Pokemon in the wider world.
