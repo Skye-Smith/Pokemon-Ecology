@@ -23,6 +23,7 @@ library(dplyr)
 theme_set(theme_bw())
 
 pokemon <- read.csv("pokedex.csv")
+pokemon[pokemon == ''] <- NA
 
 ```
 # Pokemon Ecology
@@ -40,6 +41,31 @@ simpson <- function(N, n) {
 
 ```{r code2}
 
+pokemon |>
+	summarize(
+		num_types = if_else(is.na(type_2), "Multiple Types", "Single type")
+	) |>
+	ggplot(
+		mapping = aes(x = num_types)
+	) + 
+	geom_bar()
+
+pokemon |>
+	summarize(
+		.by = type_1,
+		combined_type = type_1,
+		avg_power = mean(total_points)
+	) |>
+	ggplot(
+		mapping = aes(x = combined_type, y = avg_power)
+	) +
+	geom_bar(
+		stat = "identity"
+	) +
+	theme(
+		axis.text.x = element_text(angle = 90)
+	)
+	
 
 ```
 
