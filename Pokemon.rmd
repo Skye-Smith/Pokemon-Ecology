@@ -52,7 +52,9 @@ simpson <- function(n) {
 shannon <- function(n) {
   #creating the total population
   N = sum(n)
+  #creating proportions of each grouping
   pi = n/N
+  #calculating shannon
   H = -1*sum(pi*log(pi))
   return(H)
 }
@@ -63,9 +65,13 @@ shannon <- function(n) {
 ```
 
 ```{r PielousEveness}
+# Accepts a vector n. n is made up of the number of individuals in each grouping (species) of the population
 pielou <- function(n) {
+  #calculating richness (number of species or number of groupings)
   S = length(n)
+  #calculating the shannon diversity index
   H = shannon(n)
+  #calculating pielou
   J = H/log(S)
   return(J)
 }
@@ -74,6 +80,17 @@ pielou <- function(n) {
 #pielou(testn)
 
 ```
+
+
+
+```{r diversitygraphs}
+
+
+
+
+```
+
+
 
 
 ```{r code2}
