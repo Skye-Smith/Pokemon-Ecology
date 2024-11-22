@@ -29,8 +29,20 @@ pokemon <- read.csv("pokedex.csv")
 
 Our data comes from the pokemon videogames, which have been released regularly since 1996. The data itself is a collection of the statistics found within the pokedex contained in each game. Our data is not a sample, it is a complete collection of all pokedex entries. Since our data represents the entire population we are concerned with, there is no sampling bias. Our questions are for an observational study, as we are working from pre-collected data. The measurements were taken from the pokedex, which records information about the various pokemon that can be caught in the games. We do not suspect any bias in the data collected, as it is made up of all the stats for every pokemon game created since the first was made in 1996. This data is of interest to us because we want to explore the hypothetical ecology of the pokemon world.
 
-# Simpson's Index: N is the total community; ni is the # individuals in a grouping ("species"), and S is species richness
-
+# Simpson's Diversity Index: N is the total community; n is a vector of each individual groupings ()
+```{r Simpson}
 simpson <- function(N, n) {
-  
+  D = 1-(sum(n*(n-1))/N*(N-1))
+  return(D)
 }
+```
+
+
+```{r code2}
+
+
+```
+
+
+
+
