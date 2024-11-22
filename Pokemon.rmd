@@ -83,9 +83,9 @@ pielou <- function(n) {
 ```
 
 
-# Diversity and Eveness Graphs
+# Diversity and Eveness Graphs by Species
 ```{r diversitygraphs}
-#Looking at all species regardless of generation or type
+#Looking at all species regardless of generation
 pokemon_all_species <- 
   pokemon |> 
   summarize(
@@ -129,7 +129,7 @@ gen8_species <-
   pokemon_allgen_species |> 
   filter(generation==8)
 
-pokemon_diversity_comparison <- 
+pokemon_diversity_species_comparison <- 
 data.frame(
   "Population"=c("All Species","Gen1","Gen2","Gen3","Gen4","Gen5","Gen6","Gen7","Gen8"),
   "SimpsonsDiversity"=c(simpson(pokemon_all_species$all_species_n), simpson(gen1_species$gen_species_n), simpson(gen2_species$gen_species_n), simpson(gen3_species$gen_species_n), simpson(gen4_species$gen_species_n), simpson(gen5_species$gen_species_n), simpson(gen6_species$gen_species_n), simpson(gen7_species$gen_species_n), simpson(gen8_species$gen_species_n)),
@@ -137,9 +137,65 @@ data.frame(
   "PielousEveness"=c(pielou(pokemon_all_species$all_species_n), pielou(gen1_species$gen_species_n), pielou(gen2_species$gen_species_n), pielou(gen3_species$gen_species_n), pielou(gen4_species$gen_species_n), pielou(gen5_species$gen_species_n), pielou(gen6_species$gen_species_n), pielou(gen7_species$gen_species_n), pielou(gen8_species$gen_species_n))
   )
 
-simpson(pokemon_all_species$all_species_n)
-shannon(pokemon_all_species$all_species_n)
-pielou(pokemon_all_species$all_species_n)
+pokemon_diversity_comparison
+
+```
+
+# Diversity and Eveness Graphs by Species
+```{r diversitygraphs}
+#Looking at all species regardless of generation
+pokemon_all_type <- 
+  pokemon |> 
+  summarize(
+    .by=type_1,
+    all_type_n=n()
+  )
+
+#Creating table to sort species by generation
+pokemon_allgen_type <- 
+  pokemon |> 
+  summarize(
+    .by=c(type_1,generation),
+    gen_type_n=n()
+  ) |> 
+  arrange(
+    .by=generation
+  )
+
+gen1_types <- 
+  pokemon_allgen_type |> 
+  filter(generation==1)
+gen2_types <- 
+  pokemon_allgen_type |> 
+  filter(generation==2)
+gen3_types <- 
+  pokemon_allgen_type |> 
+  filter(generation==3)
+gen4_types <- 
+  pokemon_allgen_type |> 
+  filter(generation==4)
+gen5_types <- 
+  pokemon_allgen_type |> 
+  filter(generation==5)
+gen6_types <- 
+  pokemon_allgen_type |> 
+  filter(generation==6)
+gen7_types <- 
+  pokemon_allgen_type |> 
+  filter(generation==7)
+gen8_types <- 
+  pokemon_allgen_type |> 
+  filter(generation==8)
+
+pokemon_diversity_types_comparison <- 
+data.frame(
+  "Population"=c("All Species","Gen1","Gen2","Gen3","Gen4","Gen5","Gen6","Gen7","Gen8"),
+  "SimpsonsDiversity"=c(simpson(pokemon_all_type$all_type_n), simpson(gen1_types$gen_type_n), simpson(gen2_types$gen_type_n), simpson(gen3_types$gen_type_n), simpson(gen4_types$gen_type_n), simpson(gen5_types$gen_type_n), simpson(gen6_types$gen_type_n), simpson(gen7_types$gen_type_n), simpson(gen8_types$gen_type_n)),
+  "ShannonsDiversity"=c(shannon(pokemon_all_type$all_type_n), shannon(gen1_types$gen_type_n), shannon(gen2_types$gen_type_n), shannon(gen3_types$gen_type_n), shannon(gen4_types$gen_type_n), shannon(gen5_types$gen_type_n), shannon(gen6_types$gen_type_n), shannon(gen7_types$gen_type_n), shannon(gen8_types$gen_type_n)),
+  "PielousEveness"=c(pielou(pokemon_all_type$all_type_n), pielou(gen1_types$gen_type_n), pielou(gen2_types$gen_type_n), pielou(gen3_types$gen_type_n), pielou(gen4_types$gen_type_n), pielou(gen5_types$gen_type_n), pielou(gen6_types$gen_type_n), pielou(gen7_types$gen_type_n), pielou(gen8_types$gen_type_n))
+  )
+
+pokemon_diversity_types_comparison
 
 ```
 
