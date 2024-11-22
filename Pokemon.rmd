@@ -30,7 +30,7 @@ pokemon[pokemon == ''] <- NA
 
 Our data comes from the pokemon videogames, which have been released regularly since 1996. The data itself is a collection of the statistics found within the pokedex contained in each game. Our data is not a sample, it is a complete collection of all pokedex entries. Since our data represents the entire population we are concerned with, there is no sampling bias. Our questions are for an observational study, as we are working from pre-collected data. The measurements were taken from the pokedex, which records information about the various pokemon that can be caught in the games. We do not suspect any bias in the data collected, as it is made up of all the stats for every pokemon game created since the first was made in 1996. This data is of interest to us because we want to explore the hypothetical ecology of the pokemon world.
 
-# Simpson's Diversity Index: n is a vector of each individual groupings
+# Simpson's Diversity Index
 ```{r SimpsonIndex}
 # Accepts a vector n. n is made up of the number of individuals in each grouping (species) of the population
 simpson <- function(n) {
@@ -46,7 +46,7 @@ simpson <- function(n) {
 
 ```
 
-
+# Shannon's Diversity Index
 ```{r ShannonsIndex}
 # Accepts a vector n. n is made up of the number of individuals in each grouping (species) of the population
 shannon <- function(n) {
@@ -64,6 +64,7 @@ shannon <- function(n) {
 
 ```
 
+# Pielou's Eveness Index
 ```{r PielousEveness}
 # Accepts a vector n. n is made up of the number of individuals in each grouping (species) of the population
 pielou <- function(n) {
@@ -82,11 +83,63 @@ pielou <- function(n) {
 ```
 
 
-
+# Diversity and Eveness Graphs
 ```{r diversitygraphs}
+#Looking at all species regardless of generation or type
+pokemon_all_species <- 
+  pokemon |> 
+  summarize(
+    .by=species,
+    all_species_n=n()
+  )
 
+#Creating table to sort species by generation
+pokemon_allgen_species <- 
+  pokemon |> 
+  summarize(
+    .by=c(species,generation),
+    gen_species_n=n()
+  ) |> 
+  arrange(
+    .by=generation
+  )
 
+gen1_species <- 
+  pokemon_allgen_species |> 
+  filter(generation==1)
+gen2_species <- 
+  pokemon_allgen_species |> 
+  filter(generation==2)
+gen3_species <- 
+  pokemon_allgen_species |> 
+  filter(generation==3)
+gen4_species <- 
+  pokemon_allgen_species |> 
+  filter(generation==4)
+gen5_species <- 
+  pokemon_allgen_species |> 
+  filter(generation==5)
+gen6_species <- 
+  pokemon_allgen_species |> 
+  filter(generation==6)
+gen7_species <- 
+  pokemon_allgen_species |> 
+  filter(generation==7)
+gen8_species <- 
+  pokemon_allgen_species |> 
+  filter(generation==8)
 
+pokemon_diversity_comparison <- 
+data.frame(
+  "Population"=c("All Species","Gen1","Gen2","Gen3","Gen4","Gen5","Gen6","Gen7","Gen8"),
+  "SimpsonsDiversity"=c(simpson(pokemon_all_species$all_species_n), simpson(gen1_species$gen_species_n), simpson(gen2_species$gen_species_n), simpson(gen3_species$gen_species_n), simpson(gen4_species$gen_species_n), simpson(gen5_species$gen_species_n), simpson(gen6_species$gen_species_n), simpson(gen7_species$gen_species_n), simpson(gen8_species$gen_species_n)),
+  "ShannonsDiversity"=c(shannon(pokemon_all_species$all_species_n), shannon(gen1_species$gen_species_n), shannon(gen2_species$gen_species_n), shannon(gen3_species$gen_species_n), shannon(gen4_species$gen_species_n), shannon(gen5_species$gen_species_n), shannon(gen6_species$gen_species_n), shannon(gen7_species$gen_species_n), shannon(gen8_species$gen_species_n)),
+  "PielousEveness"=c(pielou(pokemon_all_species$all_species_n), pielou(gen1_species$gen_species_n), pielou(gen2_species$gen_species_n), pielou(gen3_species$gen_species_n), pielou(gen4_species$gen_species_n), pielou(gen5_species$gen_species_n), pielou(gen6_species$gen_species_n), pielou(gen7_species$gen_species_n), pielou(gen8_species$gen_species_n))
+  )
+
+simpson(pokemon_all_species$all_species_n)
+shannon(pokemon_all_species$all_species_n)
+pielou(pokemon_all_species$all_species_n)
 
 ```
 
