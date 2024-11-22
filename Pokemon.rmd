@@ -24,6 +24,17 @@ theme_set(theme_bw())
 
 pokemon <- read.csv("pokedex.csv")
 pokemon[pokemon == ''] <- NA
+colors <- data.frame(
+	id = c(1:18),
+	color_name = factor(c("Bug", "Dark", "Dragon", "Electric", "Fairy",
+								 "Fighting", "Fire", "Flying", "Ghost", "Grass",
+								 "Ground", "Ice", "Normal", "Poison", "Psychic",
+								 "Rock", "Steel", "Water")),
+	color = c("#a9b920", "#513d2f", "#755de0", "#fbb615", "#f3acf4",
+						"#80321f", "#f0400e", "#96a8f2", "#444595", "#73c238",
+						"#d0b157", "#aae9fd", "#c7bfb6", "#924493", "#ee4880",
+						"#9d873c", "#b6b3c2", "#3395f5")
+)
 
 ```
 # Pokemon Ecology
@@ -218,23 +229,53 @@ pokemon |>
 	)
 
 ```
+
+
+
 ``` {r power-by-type}
+
+color_pick <- function(type) {
+	color <-	
+		colors |>
+		filter(
+			color_name == type
+		) |>
+		summarize(
+			color = first(color)
+		)
+	
+	return(color[1, 1])
+}
 
 pokemon |>
 	summarize(
 		.by = type_1,
 		avg_power = mean(total_points)
 	) |>
+	arrange(
+		desc(avg_power)
+	) |>
 	ggplot(
 		mapping = aes(x = reorder(type_1, avg_power, decreasing = TRUE), y = avg_power)
 	) +
 	geom_col(
+		fill = c(color_pick("Dragon"), color_pick("Psychic"), color_pick("Steel"), color_pick("Fire"), 
+						 color_pick("Electric"), color_pick("Rock"), color_pick("Fighting"), color_pick("Ghost"), 
+						 color_pick("Flying"), color_pick("Fairy"), color_pick("Poison"), color_pick("Dark"), 
+						 color_pick("Water"), color_pick("Ground"), color_pick("Ice"), color_pick("Grass"), 
+						 color_pick("Normal"), color_pick("Bug"))
 	) +
 	scale_y_continuous(
 		expand = c(0,0),
 		limits = c(0, 550)
 	) +
+	labs(
+		title = "Average Power by Type",
+		x = "Pokemon Types",
+		y = "Average Base Power"
+	) +
 	theme(
+		plot.title = element_text(size = 16, hjust = 0.5),
 		axis.text.x = element_text(angle = 59, vjust = 0.5)
 	)
 
