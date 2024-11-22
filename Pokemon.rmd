@@ -31,8 +31,9 @@ Our data comes from the pokemon videogames, which have been released regularly s
 
 # Simpson's Diversity Index: N is the total community; n is a vector of each individual groupings ()
 ```{r Simpson}
-simpson <- function(N, n) {
-  D = 1-(sum(n*(n-1))/N*(N-1))
+simpson <- function(n) {
+  N = sum(n)
+  D = 1-(sum(n*(n-1))/(N*(N-1)))
   return(D)
 }
 ```
