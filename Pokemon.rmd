@@ -204,9 +204,16 @@ pokemon_diversity_species_comparison |>
 	) + 
 	scale_y_continuous(
 		breaks=seq(1,7,1)
-	)
+	) +
+  labs(
+    y=NULL,
+    fill=NULL,
+    title="Pielou's Eveness, Shannon's Diversity, and Simpson's Diversity Indexes of Species"
+  )
 
 ```
+The above bargraph is simply showing a comparison of each species Pielou's Eveness, Shannon's Diversity, and Simpson's Diversity Indexes. "All Species" refers to all species in the pokedex dataset regardless of generation, after which each generation's species indexes are shown. Pielou's Eveness index remains quite similar across all generations, suggesting that there is little difference in eveness of species across generations. While Simpson's diversity index also remains steady across generations, Shannon's diversity index has more variability, suggesting that some generations (such as 3 and 5) may have diversity of species than others (such as generation 6).
+
 
 ### Diversity and Eveness Graphs by Species
 
@@ -286,10 +293,15 @@ pokemon_diversity_types_comparison |>
 	) +
 	geom_col(
 		position = "dodge"
-	)
+	) +
+  labs(
+    y=NULL,
+    fill=NULL,
+    title="Pielou's Eveness, Shannon's Diversity, and Simpson's Diversity Indexes of Types"
+  )
 
 ```
-
+The above bargraph is simply showing a comparison of each types Pielou's Eveness, Shannon's Diversity, and Simpson's Diversity Indexes. "All Types" refers to all types in the pokedex dataset regardless of generation, after which each generation's types indexes are shown. There is little difference for all indexes shown, suggesting that there is little difference in diversity or eveness in types across generations.
 
 ## Proportion of Multi-type Pokemon
 
@@ -360,9 +372,11 @@ pokemon |>
 	)
 
 ```
-The graph above displays the average base power of pokemon with respect to their primary type. From this graph we can determine a few interesting relationships between type and strength. For instance, there appears to be a large number of types which, on average, exhibit similar strength (on the graph, roughly fire through Ice). However, there are three types on the high and low end which exhibit a larger difference in strength from their peers. On the high end, Dragon, Psychic and Steel are all notably stronger, and on the low end, Grass, Normal and Bug type pokemon are weaker on average. We believe that this data implies a dramatic difference between the average conditions which the pokemon of various types are subject to in their natural habitats. For instance, Draconic pokemon may tend to live in much more hostile environs than the average normal type pokemon, and thus, Dragon types have developed greater resilience.
+The graph above displays the average base power of pokemon with respect to their primary type. From this graph we can determine a few interesting relationships between type and strength. For instance, there appears to be a large number of types which, on average, exhibit similar strength (on the graph, roughly fire through Ice). However, there are three types on the high and low end which exhibit a larger difference in strength from their peers. On the high end, Dragon, Psychic and Steel are all notably stronger, and on the low end, Grass, Normal and Bug type pokemon are weaker on average. We believe that this data implies a dramatic difference between the average conditions which the pokemon of various types are subject to in their natural habitats. For instance, Draconic pokemon may tend to live in much more hostile environmentss than the average normal type pokemon, and thus, Dragon types have developed greater resilience.
 
 ## Conclusions
+
+While there are some slight differences in the diversity of species across generations, generally, the diversity and eveness of species and types of each generation are mostly similar to one another. The number of single-type versus multi-type pokemon are not significantly different from one another, indicating that the two populations are relatively similar to one another. In comparing each types average power, it was found that Dragon-type pokemon tend to be the most powerful, while Bug-type pokemon tend to be the weakest.
 
 ## Limitations / Reccomendations
 
