@@ -199,17 +199,14 @@ pokemon_diversity_species_comparison |>
 		-Population
 	) |>
 	ggplot(
-		mapping = aes(x = Population, y = value, fill = name)
+		mapping = aes(x = Population, y = value, group = name, color=name)
 	) +
-	geom_col(
-		position = "dodge"
-	) + 
-	scale_y_continuous(
-		breaks=seq(1,7,1)
-	) +
+	geom_line() + 
+  geom_point() +
+  facet_wrap(~name,ncol=1,scales="free_y") +
   labs(
     y=NULL,
-    fill=NULL,
+    color=NULL,
     title="Pielou's Eveness, Shannon's Diversity, and Simpson's Diversity Indexes of Species"
   )
 
@@ -291,14 +288,14 @@ pokemon_diversity_types_comparison |>
 		-Population
 	) |>
 	ggplot(
-		mapping = aes(x = Population, y = value, fill = name)
+		mapping = aes(x = Population, y = value, group = name, color=name)
 	) +
-	geom_col(
-		position = "dodge"
-	) +
+	geom_line() + 
+  geom_point() +
+  facet_wrap(~name,ncol=1,scales="free_y") +
   labs(
     y=NULL,
-    fill=NULL,
+    color=NULL,
     title="Pielou's Eveness, Shannon's Diversity, and Simpson's Diversity Indexes of Types"
   )
 
