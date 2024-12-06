@@ -433,6 +433,9 @@ rpart.plot(
   shadow.col = "gray"
 )
 
+caret::varImp(poke_tree_pruned) |> 
+  arrange(desc(Overall))
+
 ```
 ``` {r ml-knn}
 set.seed(2870)
