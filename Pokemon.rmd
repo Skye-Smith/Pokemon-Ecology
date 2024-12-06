@@ -209,6 +209,9 @@ pokemon_diversity_species_comparison |>
     y=NULL,
     color=NULL,
     title="Pielou's Eveness, Shannon's Diversity, and Simpson's Diversity Indexes of Species"
+  ) +
+  theme(
+    legend.position="none"
   )
 
 ```
@@ -298,6 +301,9 @@ pokemon_diversity_types_comparison |>
     y=NULL,
     color=NULL,
     title="Pielou's Eveness, Shannon's Diversity, and Simpson's Diversity Indexes of Types"
+  ) +
+  theme(
+    legend.position="none"
   )
 
 ```
