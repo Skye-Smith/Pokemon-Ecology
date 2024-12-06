@@ -17,6 +17,7 @@ library(regclass)
 library(broom)
 library(GGally)
 library(dplyr)
+library(FNN)
 library(rpart)
 library(rpart.plot)
 
@@ -408,7 +409,7 @@ poke_tree_full$cptable |>
 	pull(xcutoff) ->
 	x_cutoff
 
-tree_tree_full$cptable |>
+poke_tree_full$cptable |>
 	data.frame() |>
 	filter(
 		xerror < x_cutoff
@@ -418,7 +419,7 @@ tree_tree_full$cptable |>
 	cp_cutoff
 
 prune(
-	tree = tree_tree_full,
+	tree = poke_tree_full,
 	cp = cp_cutoff
 ) ->
 	poke_tree_pruned
@@ -434,17 +435,31 @@ rpart.plot(
 
 ```
 ``` {r ml-knn}
-
+set.seed(2870)
 k <- 5:100
 
 normalize <- function(x) {
   return((x - min(x)) / (max(x) - min(x)))
 }
 
+xp_vals <-
+  pokemon |>
+  select(
+    base_experience,
+    hp:speed
+  ) |>
+  drop_na() |>
+  pull(base_experience)
+
 poke_norm <-
   pokemon |>
   select(
+    base_experience,
     hp:speed
+  ) |>
+  drop_na() |>
+  select(
+    -base_experience
   ) |>
   mutate(
     across(
@@ -459,7 +474,12 @@ standardize <- function(x) {
 poke_std <-
   pokemon |>
   select(
+    base_experience,
     hp:speed
+  ) |>
+  drop_na() |>
+  select(
+    -base_experience
   ) |>
   mutate(
     across(
@@ -479,14 +499,14 @@ for (i in k) {
   xp_norm_knn <-
     knn.reg(
       train = poke_norm,
-      y = pokemon$base_experience,
+      y = xp_vals,
       k = i
     )
   
   xp_std_knn <-
     knn.reg(
       train = poke_std,
-      y = pokemon$base_experience,
+      y = xp_vals,
       k = i
     )
     
@@ -504,6 +524,41 @@ stats_df |>
     mapping = aes(x = k, y = val, color = scale)
   ) + 
   geom_line()
+
+```
+``` {r knn-analysis}
+
+best_knn <-
+  knn.reg(
+    train = poke_std,
+    y = xp_vals,
+    k = 8
+  )
+
+y_hat = best_knn$pred
+
+R2 = 1 - (
+  sum((xp_vals - y_hat)^2) /
+    sum((xp_vals - mean(xp_vals))^2)
+)
+
+tibble(
+  prediction = y_hat,
+  actual = xp_vals
+) |>
+  ggplot(
+    mapping = aes(y = prediction, x = actual)
+  ) + 
+  geom_point() +
+  geom_smooth(
+    method = "lm",
+    se = FALSE
+  ) +
+  geom_label(
+    label = paste("R2 =", round(R2, 4)),
+    x = 70,
+    y = 520
+  )
 
 ```
 
