@@ -374,6 +374,17 @@ pokemon |>
 ```
 The graph above displays the average base power of pokemon with respect to their primary type. From this graph we can determine a few interesting relationships between type and strength. For instance, there appears to be a large number of types which, on average, exhibit similar strength (on the graph, roughly fire through Ice). However, there are three types on the high and low end which exhibit a larger difference in strength from their peers. On the high end, Dragon, Psychic and Steel are all notably stronger, and on the low end, Grass, Normal and Bug type pokemon are weaker on average. We believe that this data implies a dramatic difference between the average conditions which the pokemon of various types are subject to in their natural habitats. For instance, Draconic pokemon may tend to live in much more hostile environmentss than the average normal type pokemon, and thus, Dragon types have developed greater resilience.
 
+## Machine Learning Methods
+
+``` {r ml-a}
+
+```
+
+``` {r ml-b}
+
+```
+
+
 ## Conclusions
 
 While there are some slight differences in the diversity of species across generations, generally, the diversity and eveness of species and types of each generation are mostly similar to one another. The number of single-type versus multi-type pokemon are not significantly different from one another, indicating that the two populations are relatively similar to one another. In comparing each types average power, it was found that Dragon-type pokemon tend to be the most powerful, while Bug-type pokemon tend to be the weakest.
