@@ -408,7 +408,7 @@ poke_tree_full$cptable |>
 	pull(xcutoff) ->
 	x_cutoff
 
-tree_tree_full$cptable |>
+poke_tree_full$cptable |>
 	data.frame() |>
 	filter(
 		xerror < x_cutoff
@@ -418,7 +418,7 @@ tree_tree_full$cptable |>
 	cp_cutoff
 
 prune(
-	tree = tree_tree_full,
+	tree = poke_tree_full,
 	cp = cp_cutoff
 ) ->
 	poke_tree_pruned
@@ -431,6 +431,9 @@ rpart.plot(
   box.palette = "BlGnYl",
   shadow.col = "gray"
 )
+
+caret::varImp(poke_tree_pruned) |> 
+  arrange(desc(Overall))
 
 ```
 ``` {r ml-knn}
