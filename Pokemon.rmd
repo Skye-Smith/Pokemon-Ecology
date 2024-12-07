@@ -437,6 +437,7 @@ caret::varImp(poke_tree_pruned) |>
   arrange(desc(Overall))
 
 ```
+
 ``` {r ml-knn}
 set.seed(2870)
 k <- 5:100
@@ -529,6 +530,7 @@ stats_df |>
   geom_line()
 
 ```
+
 ``` {r knn-analysis}
 
 best_knn <-
