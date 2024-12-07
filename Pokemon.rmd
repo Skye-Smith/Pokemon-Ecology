@@ -443,6 +443,9 @@ caret::varImp(poke_tree_pruned) |>
   arrange(desc(Overall))
 
 ```
+# KNN Predicting Pokemon Weight
+
+For this model we predicted the base experience value of Pokemon from the base stat values (hp, defense, etc.). 
 
 ``` {r ml-knn}
 set.seed(2870)
@@ -537,6 +540,8 @@ stats_df |>
 
 ```
 
+Due to the algorithms nature as a KNN, a lazy learner, we cannot analyze how the different statistics affected the predictions, but were able to achieve an R2 value of ~0.87, which suggests that there is a fairly strong relationship between the provided stats and base_experience.
+
 ``` {r knn-analysis}
 
 best_knn <-
@@ -572,6 +577,9 @@ tibble(
   )
 
 ```
+# Linear Model Predicting Pokemon Weight
+
+For this model, we predicted the weight of Pokemon given their height, hp and types. Our model is moderately effective, achieving an R2 value of 0.64. However, To achieve this, we required adding both types, which are categorical values with 18 options, causing our number of predictors to be largely inflated. There does appear to be a correlation between weight and our provided explanatory variables, and that our model is significantly better than random guesses. This makes sense as it is likely a tall steel-type Pokemon would be significantly heavier than a short flying-type. However, since this correlation appears to be weak, we recommend that, should predictions of this nature be required in the future, other variables are investigated, perhaps adding length, or volume to the dataset would significantly improve results.
 
 ``` {r ml-}
 
