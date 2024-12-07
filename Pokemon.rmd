@@ -387,14 +387,52 @@ The graph above displays the average base power of pokemon with respect to their
 RNGversion("4.1.0")
 set.seed(2870)
 
-# Create the full classification tree below
+# Creating new column that has four types: fire, water, grass, and "other" for all other types. If this dataset had data available on the starter pokemon, this is what this tree would have been used for, but for now it will be used to predict one of those four types based off of the pokemon's weaknesses.
 
+#pokemon_type_trim <- 
+#  pokemon |> 
+#  mutate(
+#    type_1_trim = if_else(
+#      type_1=="Grass" | type_1=="Fire" | type_1=="Water",
+#      true=type_1, false="Other"
+#    )
+#  )
+
+pokemon_type_trim2 <- 
+  pokemon |> 
+  mutate(
+    type_1_trim = if_else(
+      type_1=="Grass" | type_1=="Fire" | type_1=="Water",
+      true=type_1, false="Other"
+    )
+  ) |> 
+  filter(
+    type_1_trim != "Other"
+  )
+
+# Create the full classification tree below
 poke_tree_full <-
 	rpart(
-		formula = type_1 ~ against_normal + against_fire + against_water + against_electric + against_grass +
-		  against_ice + against_fight + against_poison + against_ground + against_flying + against_psychic +
-		  against_bug + against_rock + against_ghost + against_dragon + against_dark + against_steel + against_fairy,
-		data = pokemon,
+		formula = type_1_trim ~
+		  against_normal + 
+		  against_fire + 
+		  against_water + 
+		  against_electric + 
+		  against_grass +
+		  against_ice + 
+		  against_fight + 
+		  against_poison + 
+		  against_ground + 
+		  against_flying + 
+		  against_psychic + 
+		  against_bug + 
+		  against_rock + 
+		  against_ghost + 
+		  against_dragon + 
+		  against_dark + 
+		  against_steel + 
+		  against_fairy,
+		data = pokemon_type_trim2,
 		method = "class",
 		parms = list(split = "information"),
 		minsplit = 2,
@@ -435,7 +473,7 @@ rpart.plot(
   type = 5,
   digits = 4,
   fallen.leaves = TRUE,
-  box.palette = "BlGnYl",
+  box.palette = list("#f0400e","#73c238","#3395f5"), #"BlGnYl",
   shadow.col = "gray"
 )
 
@@ -443,6 +481,8 @@ caret::varImp(poke_tree_pruned) |>
   arrange(desc(Overall))
 
 ```
+In this table, we predicted the primary type (type_1) of a pokemon based off of the types it was weak to. For the purposes of making a readable tree, we filtered out all types that were not fire, grass, or water. 
+
 # KNN Predicting Pokemon Weight
 
 For this model we predicted the base experience value of Pokemon from the base stat values (hp, defense, etc.). 
