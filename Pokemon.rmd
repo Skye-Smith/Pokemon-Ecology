@@ -7,8 +7,8 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,
                       fig.align = "center",
-                      warning = F,
-                      mesage = F)
+                      warning = T,
+                      mesage = T)
 
 # Load the needed packages for MLR: tidyverse, regclass, broom, GGally
 
@@ -215,7 +215,7 @@ pokemon_diversity_species_comparison |>
   )
 
 ```
-The above bargraph is simply showing a comparison of each species Pielou's Eveness, Shannon's Diversity, and Simpson's Diversity Indexes. "All Species" refers to all species in the pokedex dataset regardless of generation, after which each generation's species indexes are shown. Pielou's Eveness index remains quite similar across all generations, suggesting that there is little difference in eveness of species across generations. While Simpson's diversity index also remains steady across generations, Shannon's diversity index has more variability, suggesting that some generations (such as 3 and 5) may have diversity of species than others (such as generation 6).
+The above graph is simply showing a comparison of each generation's Pielou's Eveness, Shannon's Diversity, and Simpson's Diversity Indexes according to species. "All Species" refers to all species in the pokedex dataset regardless of generation, after which each generation's species indexes are shown. Pielou's Eveness index remains quite similar across all generations, though it dips slightly (by around 0.01) at generations 1 and 6. Simpson's diversity and Shannon's diversity indexes generally follow this same trend, and diversity is notably lowest in generation 6, suggesting that pokemon from gen 6 represent a less diverse ecological community.
 
 
 ### Diversity and Eveness Graphs by Species
@@ -307,7 +307,7 @@ pokemon_diversity_types_comparison |>
   )
 
 ```
-The above bargraph is simply showing a comparison of each types Pielou's Eveness, Shannon's Diversity, and Simpson's Diversity Indexes. "All Types" refers to all types in the pokedex dataset regardless of generation, after which each generation's types indexes are shown. There is little difference for all indexes shown, suggesting that there is little difference in diversity or eveness in types across generations.
+The above graph shows a comparison of each generation's Pielou's Eveness, Shannon's Diversity, and Simpson's Diversity Indexes according to type. "All Types" refers to all types in the pokedex dataset regardless of generation, after which each generation's types indexes are shown. While at the scale of the data, there is less variation than compared to the diversity by species; there are still some trends in the data. Generations 1 and 2 tend to have less diversity and eveness of pokemon types tgan compared to the rest, until a slight spike in generation 3. At this point, the both eveness and diversity tends to increase until it peaks at gen 6. At this point, there is a sudden decrease at gen 7, until all metrics peak at their highest eveness and diversity scores at generation 8.
 
 ## Proportion of Multi-type Pokemon
 
@@ -473,7 +473,7 @@ rpart.plot(
   type = 5,
   digits = 4,
   fallen.leaves = TRUE,
-  box.palette = list("#f0400e","#73c238","#3395f5"), #"BlGnYl",
+  box.palette = list("#f0400e","#73c238","#3395f5"),
   shadow.col = "gray"
 )
 
@@ -481,9 +481,9 @@ caret::varImp(poke_tree_pruned) |>
   arrange(desc(Overall))
 
 ```
-In this table, we predicted the primary type (type_1) of a pokemon based off of the types it was weak to. For the purposes of making a readable tree, we filtered out all types that were not fire, grass, or water. 
+In this classification tree, we predicted the primary type (type_1) of a pokemon based off of the types it was weak to. For the purposes of making a readable tree, we filtered out all types that were not fire, grass, or water. If this data had included information about starter pokemon, this might have been a good graph to use to predict whether a starter pokemon was a Fire, Grass, or Water type based off of its weaknesses, but as it exists right now, this includes all pokemon of those types rather than just the starters. This tree can be used to make predictions about a pokemon's type based off of its weaknesses.
 
-# KNN Predicting Pokemon Weight
+# KNN Predicting Pokemon Base Experience Value
 
 For this model we predicted the base experience value of Pokemon from the base stat values (hp, defense, etc.). 
 
@@ -579,7 +579,6 @@ stats_df |>
   geom_line()
 
 ```
-
 Due to the algorithms nature as a KNN, a lazy learner, we cannot analyze how the different statistics affected the predictions, but were able to achieve an R2 value of ~0.87, which suggests that there is a fairly strong relationship between the provided stats and base_experience.
 
 ``` {r knn-analysis}
@@ -646,7 +645,7 @@ bind_rows(
 
 ## Conclusions
 
-While there are some slight differences in the diversity of species across generations, generally, the diversity and eveness of species and types of each generation are mostly similar to one another. The number of single-type versus multi-type pokemon are not significantly different from one another, indicating that the two populations are relatively similar to one another. In comparing each types average power, it was found that Dragon-type pokemon tend to be the most powerful, while Bug-type pokemon tend to be the weakest.
+While there are some slight differences in the diversity of species across generations, generally, the diversity and eveness of species and types of each generation are mostly similar to one another. The number of single-type versus multi-type pokemon are not significantly different from one another, indicating that the two populations are relatively similar to one another. In comparing each types average power, it was found that Dragon-type pokemon tend to be the most powerful, while Bug-type pokemon tend to be the weakest. In addition, using our models, both basic and less obvious information on a pokemon can be predicted from its statistics. Pokemon type could be predicted from its weaknesses, its base experience can be predicted from its base stat values such as HP and defense, and its weight can be predicted from its height, hp, and type.
 
 ## Limitations / Reccomendations
 
